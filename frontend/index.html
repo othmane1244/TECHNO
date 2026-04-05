@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELMA — Assistant IA</title>
+  <meta name="description" content="ELMA — Assistant IA génératif local, ENSA Béni Mellal" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Brand / Logo -->
+    <div class="sidebar-brand">
+      <div class="sidebar-logo-icon">
+        <svg viewBox="0 0 120 92" xmlns="http://www.w3.org/2000/svg" class="elma-svg" aria-label="ELMA">
+          <defs>
+            <linearGradient id="elma-g" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#6c63ff"/>
+              <stop offset="100%" stop-color="#00d4aa"/>
+            </linearGradient>
+          </defs>
+          <path d="M 27 63 Q 31 33 61 23 Q 87 15 97 33 Q 108 48 96 61 Q 80 73 55 74 Q 35 75 27 63 Z"
+                fill="none" stroke="url(#elma-g)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 96 47 L 115 39 L 97 58"
+                fill="none" stroke="url(#elma-g)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 61 23 L 44 54" stroke="url(#elma-g)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M 75 39 L 54 52" stroke="url(#elma-g)" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="61" cy="23" r="4.5" fill="url(#elma-g)"/>
+          <circle cx="75" cy="39" r="4.5" fill="url(#elma-g)"/>
+          <path d="M 27 63 L 4 80" stroke="url(#elma-g)" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 27 63 L 9 70" stroke="url(#elma-g)" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 27 63 L 7 58" stroke="url(#elma-g)" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="4" cy="80" r="3.8" fill="url(#elma-g)"/>
+          <circle cx="9" cy="70" r="3.8" fill="url(#elma-g)"/>
+          <circle cx="7" cy="58" r="3.8" fill="url(#elma-g)"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav" role="navigation">
+
+      <a class="tab-btn nav-item" data-tab="home" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </a>
+      <a class="tab-btn nav-item" data-tab="qa" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Inbox
+      </a>
+      <a class="tab-btn nav-item" data-tab="stats" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Reports
+      </a>
+
+      <div class="nav-section-label">Fonctionnalités</div>
+
+      <a class="tab-btn nav-item" data-tab="summary" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Résumé
+      </a>
+      <a class="tab-btn nav-item" data-tab="planning" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Planning
+      </a>
+      <a class="tab-btn nav-item" data-tab="wellbeing" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Bien-être
+      </a>
+
+      <div class="nav-section-label">Analytique</div>
+
+      <a class="tab-btn nav-item" data-tab="stats" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Dashboard
+      </a>
+
+      <div class="nav-section-label">Administration</div>
+
+      <a class="tab-btn nav-item tab-btn-admin" data-tab="admin" role="button" tabindex="0">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Admin
+      </a>
+
+    </nav>
+
+    <!-- Bottom: server status + student -->
+    <div class="sidebar-bottom">
+      <div class="sidebar-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span class="status-text" id="status-text">Connexion…</span>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">U</div>
+        <input type="text" id="student-id" value="ETU2024001"
+               class="student-id-input" title="ID Étudiant" />
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
+  <main class="main-content" id="main-content">
+
+    <!-- ─── PANEL : Home ─────────────────────────────────── -->
+    <section class="tab-panel active" id="panel-home" role="tabpanel">
+      <div class="home-inner">
+
+        <!-- Top bar -->
+        <div class="home-topbar">
+          <button class="btn-neutral-primary" id="home-assistant-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            Assistant
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="home-topbar-right">
+            <button class="btn-neutral-secondary" onclick="switchToTab('admin')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              Invite
+            </button>
+            <button class="btn-neutral-secondary">Help</button>
+          </div>
+        </div>
+
+        <!-- Greeting -->
+        <div class="home-greeting">
+          <h1 class="home-hello">Hello <span id="home-student-name">Irvin</span>,</h1>
+          <p class="home-subtitle">How can I help you today?</p>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="home-actions">
+          <button class="btn-action-lg" onclick="switchToTab('summary')">Upload your first file</button>
+          <button class="btn-action-lg" onclick="switchToTab('qa')">Ask your first question</button>
+          <button class="btn-action-lg" onclick="switchToTab('planning')">Try a meeting</button>
+          <button class="btn-action-lg" onclick="switchToTab('planning')">Connect your calendar</button>
+          <button class="btn-action-lg" onclick="switchToTab('summary')">Use a template</button>
+          <button class="btn-action-lg" onclick="switchToTab('admin')">Customize an assistant</button>
+        </div>
+
+        <!-- Suggested section -->
+        <div class="home-suggested">
+          <div class="home-suggested-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Suggested</span>
+          </div>
+
+          <div class="home-cards-row">
+
+            <div class="suggestion-card" onclick="switchToTab('qa')">
+              <span class="suggestion-card-title">Onboarding Call Script</span>
+              <div class="suggestion-card-img-wrap">
+                <img src="https://res.cloudinary.com/subframe/image/upload/v1723780559/uploads/302/tkyvdicnwbc5ftuyysc0.png"
+                     alt="Onboarding Call Script" class="suggestion-card-img" loading="lazy" />
+              </div>
+              <div class="suggestion-card-meta">
+                <span>Demo</span>
+                <span class="meta-dot">•</span>
+                <span>Today</span>
+              </div>
+            </div>
+
+            <div class="suggestion-card" onclick="switchToTab('summary')">
+              <span class="suggestion-card-title">AI-Powered Market Analysis</span>
+              <div class="suggestion-card-img-wrap">
+                <img src="https://res.cloudinary.com/subframe/image/upload/v1723780577/uploads/302/hhmv6ey0yajkadnmcp0a.png"
+                     alt="AI Market Analysis" class="suggestion-card-img" loading="lazy" />
+              </div>
+              <div class="suggestion-card-meta">
+                <span>ELMA AI</span>
+                <span class="meta-dot">•</span>
+                <span>Today</span>
+              </div>
+            </div>
+
+            <div class="suggestion-card" onclick="switchToTab('planning')">
+              <span class="suggestion-card-title">Project Task Breakdown</span>
+              <div class="suggestion-card-img-wrap">
+                <img src="https://res.cloudinary.com/subframe/image/upload/v1723780886/uploads/302/qw2wfjf4ptgiqbgi1jkf.png"
+                     alt="Project Task Breakdown" class="suggestion-card-img" loading="lazy" />
+              </div>
+              <div class="suggestion-card-meta">
+                <span>Personal</span>
+                <span class="meta-dot">•</span>
+                <span>Yesterday</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Bottom search bar -->
+        <div class="home-searchbar">
+          <button class="search-icon-btn" aria-label="Web search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </button>
+          <input type="text" id="home-search-input" class="home-search-input" placeholder="Ask or search anything" />
+          <button class="search-send-btn" id="home-search-send" aria-label="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── PANEL : Résumé ────────────────────────────────── -->
+    <section class="tab-panel" id="panel-summary" role="tabpanel">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <h1>Résumé automatique de cours</h1>
+          <p class="panel-desc">Collez le contenu brut de votre cours — l'IA génère 5 points clés structurés instantanément.</p>
+        </div>
+        <div class="two-col">
+          <div class="card input-card">
+            <div class="input-card-header">
+              <label for="summary-input" class="input-label">Contenu du cours</label>
+              <span class="char-count" id="summary-char">0 / 2000</span>
+            </div>
+            <textarea id="summary-input" class="big-textarea"
+                      placeholder="Collez ici le texte de votre cours…"
+                      maxlength="2000" rows="10"></textarea>
+            <div class="card-footer">
+              <button class="btn-primary" id="btn-summary">
+                <span class="btn-spinner hidden" id="spinner-summary"></span>
+                ✨ Générer le résumé
+              </button>
+            </div>
+          </div>
+          <div class="card result-card hidden" id="summary-result">
+            <div class="result-header">
+              <span class="result-title">📝 Résumé généré</span>
+              <div class="badges-row">
+                <span class="badge badge-teal" id="summary-latency-badge"></span>
+                <span class="badge badge-purple" id="summary-mode-badge"></span>
+              </div>
+            </div>
+            <div class="markdown-body" id="summary-content"></div>
+            <div class="disclaimer-bar">⚠️ Vérifiez les informations importantes — l'IA peut se tromper.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PANEL : Q&A ──────────────────────────────────── -->
+    <section class="tab-panel" id="panel-qa" role="tabpanel">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <h1>Questions &amp; Réponses</h1>
+          <p class="panel-desc">Posez vos questions — l'assistant répond de façon pédagogique.</p>
+        </div>
+        <div class="qa-layout">
+          <div class="card collapsible-card">
+            <button class="collapsible-toggle" id="ctx-toggle" aria-expanded="false">
+              <span>📚 Contexte du cours <em>(optionnel)</em></span>
+              <span class="toggle-chevron" id="ctx-chevron">▼</span>
+            </button>
+            <div class="collapsible-body" id="ctx-body" style="display:none">
+              <textarea id="qa-ctx" rows="3"
+                        placeholder="Ex: Chapitre sur les réseaux de neurones convolutifs…"></textarea>
+            </div>
+          </div>
+          <div class="chat-window" id="chat-window">
+            <div class="chat-empty" id="chat-empty">
+              <div class="chat-empty-icon">💬</div>
+              <p>Posez votre première question</p>
+              <p class="chat-hint">Les réponses restent locales</p>
+            </div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="typing-indicator hidden" id="typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="chat-input-bar card">
+            <input type="text" id="qa-input" placeholder="Votre question…" aria-label="Question" />
+            <button class="btn-send" id="btn-qa" aria-label="Envoyer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PANEL : Planning ──────────────────────────────── -->
+    <section class="tab-panel" id="panel-planning" role="tabpanel">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <h1>Planning de révision personnalisé</h1>
+          <p class="panel-desc">Ajoutez vos matières — l'IA génère un planning optimisé sur 7 jours.</p>
+        </div>
+        <div class="two-col">
+          <div class="card input-card">
+            <div class="input-card-header">
+              <label class="input-label">Matières à réviser</label>
+              <span class="char-count">Appuyer sur Entrée pour ajouter</span>
+            </div>
+            <div class="chips-container" id="chips-container">
+              <div class="chips-list" id="chips-list">
+                <span class="chip" data-value="Mathématiques">Mathématiques<button class="chip-del" aria-label="Supprimer">×</button></span>
+                <span class="chip" data-value="Physique">Physique<button class="chip-del" aria-label="Supprimer">×</button></span>
+                <span class="chip" data-value="Informatique">Informatique<button class="chip-del" aria-label="Supprimer">×</button></span>
+              </div>
+              <input type="text" id="chip-input" class="chip-input"
+                     placeholder="Ex: Algorithmes…" aria-label="Ajouter une matière" />
+            </div>
+            <div class="card-footer">
+              <button class="btn-primary" id="btn-planning">
+                <span class="btn-spinner hidden" id="spinner-planning"></span>
+                📅 Créer mon planning
+              </button>
+              <button class="btn-ghost" id="btn-print" style="display:none">🖨️ Exporter PDF</button>
+            </div>
+          </div>
+          <div class="card result-card hidden" id="planning-result">
+            <div class="result-header">
+              <span class="result-title">📅 Planning 7 jours</span>
+              <span class="badge badge-teal" id="planning-latency-badge"></span>
+            </div>
+            <div class="markdown-body" id="planning-content"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PANEL : Bien-être ─────────────────────────────── -->
+    <section class="tab-panel" id="panel-wellbeing" role="tabpanel">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <h1>Analyse de bien-être</h1>
+          <p class="panel-desc">Décrivez votre état — analyse bienveillante et confidentielle.</p>
+        </div>
+        <div class="wellbeing-layout">
+          <div class="card input-card">
+            <textarea id="wellbeing-input" rows="4"
+                      placeholder="Ex: Je suis très stressé par les examens…"></textarea>
+            <div class="card-footer">
+              <button class="btn-primary" id="btn-wellbeing">
+                <span class="btn-spinner hidden" id="spinner-wellbeing"></span>
+                💙 Analyser mon état
+              </button>
+            </div>
+          </div>
+          <div class="wellbeing-result hidden" id="wellbeing-result">
+            <div class="card gauge-card">
+              <h3 class="gauge-title">Niveau de stress détecté</h3>
+              <div class="gauge-wrapper">
+                <svg class="gauge-svg" viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="gauge-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" style="stop-color:#00d4aa"/>
+                      <stop offset="50%" style="stop-color:#f59e0b"/>
+                      <stop offset="100%" style="stop-color:#ff6b6b"/>
+                    </linearGradient>
+                  </defs>
+                  <path class="gauge-track" d="M 25 110 A 85 85 0 0 1 195 110"
+                        fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="14" stroke-linecap="round"/>
+                  <path class="gauge-fill-path" id="gauge-fill" d="M 25 110 A 85 85 0 0 1 195 110"
+                        fill="none" stroke="url(#gauge-gradient)" stroke-width="14" stroke-linecap="round"
+                        stroke-dasharray="267" stroke-dashoffset="267"/>
+                </svg>
+                <div class="gauge-center">
+                  <span class="gauge-emoji" id="gauge-emoji">😶</span>
+                  <span class="gauge-label" id="gauge-label">–</span>
+                </div>
+              </div>
+            </div>
+            <div class="wellbeing-cards-row">
+              <div class="card emotions-card">
+                <h3>😊 Émotions détectées</h3>
+                <div class="emotions-list" id="emotions-list"></div>
+              </div>
+              <div class="card conseil-card" id="conseil-card">
+                <div class="conseil-bulb">💡</div>
+                <p id="conseil-text">–</p>
+              </div>
+            </div>
+            <div class="meta-row">
+              <span class="badge badge-teal" id="wellbeing-latency-badge"></span>
+              <span class="privacy-note">🔒 Traitement 100% local</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PANEL : Stats ────────────────────────────────── -->
+    <section class="tab-panel" id="panel-stats" role="tabpanel">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <h1>Tableau de bord</h1>
+          <p class="panel-desc">Métriques d'utilisation en temps réel.</p>
+        </div>
+        <div class="stats-kpi-row">
+          <div class="card kpi-card">
+            <div class="kpi-icon" style="background:rgba(108,99,255,0.1);color:#6c63ff">🔢</div>
+            <div class="kpi-body"><span class="kpi-value" id="kpi-total">–</span><span class="kpi-label">Requêtes totales</span></div>
+          </div>
+          <div class="card kpi-card">
+            <div class="kpi-icon" style="background:rgba(0,212,170,0.1);color:#00d4aa">⚡</div>
+            <div class="kpi-body"><span class="kpi-value" id="kpi-latency">– ms</span><span class="kpi-label">Latence moy.</span></div>
+          </div>
+          <div class="card kpi-card">
+            <div class="kpi-icon" style="background:rgba(0,212,170,0.1);color:#00d4aa">🛡️</div>
+            <div class="kpi-body"><span class="kpi-value kpi-green">EDGE</span><span class="kpi-label">Mode actif</span></div>
+          </div>
+          <div class="card kpi-card">
+            <div class="kpi-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b">🗄️</div>
+            <div class="kpi-body"><span class="kpi-value">LOCAL</span><span class="kpi-label">Stockage</span></div>
+          </div>
+        </div>
+        <div class="stats-bottom-row">
+          <div class="card chart-card">
+            <div class="chart-card-header">
+              <span class="chart-title">Requêtes par tâche</span>
+              <button class="btn-refresh" id="btn-refresh-stats">⟳ Actualiser</button>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="stats-chart" aria-label="Graphique des requêtes par type de tâche"></canvas>
+            </div>
+          </div>
+          <div class="card arch-card">
+            <h3 class="arch-title">Architecture Edge active</h3>
+            <div class="arch-flow">
+              <div class="arch-node arch-user"><div class="arch-node-icon">👤</div><span>Étudiant</span></div>
+              <div class="arch-arrow-flow">→</div>
+              <div class="arch-node arch-active"><div class="arch-node-icon">🌐</div><span>Interface</span><span class="arch-dot"></span></div>
+              <div class="arch-arrow-flow">→</div>
+              <div class="arch-node arch-active"><div class="arch-node-icon">⚙️</div><span>FastAPI</span><span class="arch-dot"></span></div>
+              <div class="arch-arrow-flow">→</div>
+              <div class="arch-node" id="arch-ollama"><div class="arch-node-icon">🤖</div><span>Ollama</span></div>
+              <div class="arch-arrow-flow">→</div>
+              <div class="arch-node arch-active"><div class="arch-node-icon">🗄️</div><span>SQLite</span><span class="arch-dot"></span></div>
+            </div>
+            <div class="arch-note">☁️ Cloud : uniquement pour mise à jour du modèle</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PANEL : Admin ────────────────────────────────── -->
+    <section class="tab-panel" id="panel-admin" role="tabpanel">
+      <div class="panel-inner">
+
+        <div class="admin-breadcrumb">
+          <button class="admin-nav-btn" onclick="switchToTab('home')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="admin-nav-btn" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="admin-breadcrumb-path">
+            <span class="admin-bc-item" onclick="switchToTab('home')">Home</span>
+            <span class="admin-bc-sep">›</span>
+            <span class="admin-bc-item admin-bc-active">Knowledgebase</span>
+          </div>
+        </div>
+
+        <div class="panel-header">
+          <h1>Knowledgebase</h1>
+          <p class="panel-desc">Gérez les documents et leurs statuts.</p>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-filter-toggle" id="admin-filter-toggle">
+            <span class="admin-filter-label">MY QUICK FILTERS</span>
+            <svg class="admin-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="admin-stats-row">
+            <div class="admin-stat-tile admin-tile-blue">
+              <span class="admin-stat-num">2</span>
+              <div class="admin-stat-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Draft
+              </div>
+            </div>
+            <div class="admin-stat-tile admin-tile-orange">
+              <span class="admin-stat-num">2</span>
+              <div class="admin-stat-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Outdated
+              </div>
+            </div>
+            <div class="admin-stat-tile admin-tile-neutral">
+              <span class="admin-stat-num">1</span>
+              <div class="admin-stat-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                In Review
+              </div>
+            </div>
+            <div class="admin-stat-tile admin-tile-green">
+              <span class="admin-stat-num">3</span>
+              <div class="admin-stat-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Verified
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-filter-label-row"><span class="admin-filter-label">FILTERS</span></div>
+          <div class="admin-filters-row">
+            <div class="admin-search-wrap card">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="admin-search" placeholder='"All my 1:1 meetings"' class="admin-search-input" />
+            </div>
+            <span class="admin-filter-or">or</span>
+            <button class="btn-ghost admin-filter-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              Add filters
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-section admin-table-section">
+          <div class="admin-table-wrap card">
+            <table class="admin-table" id="admin-table">
+              <thead>
+                <tr>
+                  <th>DOC</th><th>STATUS</th><th>OWNER</th><th>VIEWS</th><th>LAST ACTIVITY</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body">
+                <tr>
+                  <td><span class="admin-doc-name">Product Roadmap Q4 2024</span></td>
+                  <td><span class="admin-badge admin-badge-draft">✏️ Draft</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-purple">E</div><span>Emma Johnson</span></div></td>
+                  <td><span class="admin-views">12</span></td>
+                  <td><span class="admin-date">2 hours ago</span></td>
+                </tr>
+                <tr>
+                  <td><span class="admin-doc-name">Feature Specification: Automated Reports</span></td>
+                  <td><span class="admin-badge admin-badge-outdated">✖ Outdated</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-teal">M</div><span>Michael Lee</span></div></td>
+                  <td><span class="admin-views">9</span></td>
+                  <td><span class="admin-date">1 month ago</span></td>
+                </tr>
+                <tr>
+                  <td><span class="admin-doc-name">Competitive Analysis Report</span></td>
+                  <td><span class="admin-badge admin-badge-verified">✔ Verified</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-orange">R</div><span>Rachel Green</span></div></td>
+                  <td><span class="admin-views">21</span></td>
+                  <td><span class="admin-date">1 month ago</span></td>
+                </tr>
+                <tr>
+                  <td><span class="admin-doc-name">User Feedback Summary — August</span></td>
+                  <td><span class="admin-badge admin-badge-verified">✔ Verified</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-purple">E</div><span>Emma Johnson</span></div></td>
+                  <td><span class="admin-views">11</span></td>
+                  <td><span class="admin-date">1 month ago</span></td>
+                </tr>
+                <tr>
+                  <td><span class="admin-doc-name">Bug Fixing Strategy for Release 2.4</span></td>
+                  <td><span class="admin-badge admin-badge-draft">✏️ Draft</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-purple">E</div><span>Emma Johnson</span></div></td>
+                  <td><span class="admin-views">4</span></td>
+                  <td><span class="admin-date">3 weeks ago</span></td>
+                </tr>
+                <tr>
+                  <td><span class="admin-doc-name">Design Guidelines — Mobile App</span></td>
+                  <td><span class="admin-badge admin-badge-review">🕐 In Review</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-teal">M</div><span>Michael Lee</span></div></td>
+                  <td><span class="admin-views">8</span></td>
+                  <td><span class="admin-date">3 weeks ago</span></td>
+                </tr>
+                <tr>
+                  <td><span class="admin-doc-name">Marketing Strategy Document</span></td>
+                  <td><span class="admin-badge admin-badge-verified">✔ Verified</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-orange">R</div><span>Rachel Green</span></div></td>
+                  <td><span class="admin-views">13</span></td>
+                  <td><span class="admin-date">1 month ago</span></td>
+                </tr>
+                <tr>
+                  <td><span class="admin-doc-name">Monthly Finances Overview</span></td>
+                  <td><span class="admin-badge admin-badge-outdated">✖ Outdated</span></td>
+                  <td><div class="admin-owner"><div class="admin-avatar av-orange">R</div><span>Rachel Green</span></div></td>
+                  <td><span class="admin-views">15</span></td>
+                  <td><span class="admin-date">3 weeks ago</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═══════════════════ ADMIN AUTH MODAL ═══════════════════ -->
+<div id="admin-modal" class="admin-modal-overlay" aria-hidden="true">
+  <div class="admin-modal-box" role="dialog" aria-labelledby="admin-modal-title" aria-modal="true">
+    <div class="admin-modal-icon">🔒</div>
+    <h2 id="admin-modal-title" class="admin-modal-title">Admin Access</h2>
+    <p class="admin-modal-desc">Enter the password to access the admin dashboard.</p>
+    <input type="password" id="admin-password-input" class="admin-modal-input" placeholder="Password…" autocomplete="current-password" />
+    <p class="admin-modal-error hidden" id="admin-modal-error">Incorrect password.</p>
+    <div class="admin-modal-actions">
+      <button class="btn-ghost" id="admin-modal-cancel">Cancel</button>
+      <button class="btn-primary" id="admin-modal-confirm">Access</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TOASTS ═══════════════════ -->
+<div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
