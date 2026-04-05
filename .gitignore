@@ -1,3 +1,14 @@
 __pycache__/
-data/campus.db
 *.pyc
+*.pyo
+.venv/
+venv/
+
+# Base de données locale
+data/campus.db
+
+# Variables d'environnement — NE JAMAIS commiter
+.env
+
+# Logs
+*.log
